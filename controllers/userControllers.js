@@ -1,10 +1,10 @@
 import blogs from "../models/blogModel.js";
 import commentModel from "../models/commentModel.js";
 import userModel from "../models/userModel.js";
-import {
-  uploadOnCloudinary,
-  deleteOnCloudinary,
-} from "../config/cloudinary.js";
+// import {
+//   uploadOnCloudinary,
+//   deleteOnCloudinary,
+// } from "../config/cloudinary.js";
 
 export const getUserDetails = async (req, res) => {
   try {
@@ -62,13 +62,13 @@ export const updateUser = async (req, res) => {
       lastname: req.body.lastname,
       bio: req.body.bio,
     };
-    if (req.file) {
-      const newImg = await uploadOnCloudinary(req.file);
-      data.profileImg = {
-        public_id: newImg.public_id,
-        url: newImg.url,
-      };
-    }
+    // if (req.file) {
+    //   const newImg = await uploadOnCloudinary(req.file);
+    //   data.profileImg = {
+    //     public_id: newImg.public_id,
+    //     url: newImg.url,
+    //   };
+    // }
     await userModel.findOneAndUpdate(userId, data);
     return res.status(200).json({ message: "Profile Updated!" });
   } catch (error) {
@@ -80,16 +80,16 @@ export const deleteUser = async (req, res) => {
   try {
     const userId = res.locals.user._id;
     const username = res.locals.user.username;
-    const profileImg = res.locals.user.profileImg.public_id;
+    //const profileImg = res.locals.user.profileImg.public_id;
 
     // Delete user document
-    await deleteOnCloudinary(profileImg);
+    //await deleteOnCloudinary(profileImg);
     await userModel.findOneAndDelete({ _id: userId });
 
     const allBlogs = await blogs.find({ author: username });
     if (allBlogs.length > 0) {
-      const imageUrls = allBlogs.map((blog) => blog.img.public_id);
-      await deleteBlogImages(imageUrls);
+      //const imageUrls = allBlogs.map((blog) => blog.img.public_id);
+      //await deleteBlogImages(imageUrls);
       const blogsId = allBlogs.map((item) => item._id);
       await commentModel.deleteMany({ blogId: { $in: blogsId } });
       await blogs.deleteMany({ author: username });
@@ -105,15 +105,15 @@ export const deleteUser = async (req, res) => {
     });
   }
 };
-async function deleteBlogImages(imageUrls) {
-  try {
-    if (imageUrls.length === 0) return;
+// async function deleteBlogImages(imageUrls) {
+//   try {
+//     if (imageUrls.length === 0) return;
 
-    const deletionPromises = imageUrls.map((url) => deleteOnCloudinary(url));
+//     const deletionPromises = imageUrls.map((url) => deleteOnCloudinary(url));
 
-    await Promise.allSettled(deletionPromises);
-  } catch (error) {
-    console.error("Error deleting blog images:", error);
-    throw error;
-  }
-}
+//     await Promise.allSettled(deletionPromises);
+//   } catch (error) {
+//     console.error("Error deleting blog images:", error);
+//     throw error;
+//   }
+// }
