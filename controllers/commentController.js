@@ -1,6 +1,6 @@
+import mongoose from "mongoose";
 import commentModel from "../models/commentModel.js";
 import blogs from "../models/blogModel.js";
-import mongoose from "mongoose";
 
 export const createComment = async (req, res) => {
   const blogId = req.params["blogId"];
