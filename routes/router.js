@@ -1,5 +1,5 @@
 import express from "express";
-import multer from "multer";
+//import multer from "multer";
 import { authentication, checkUser } from "../middleware/auth.js";
 import {
   registerController,
@@ -26,8 +26,8 @@ import {
 } from "../controllers/commentController.js";
 
 const router = express.Router();
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage });
 
 // Authentication Routes
 router.post("/signup", registerController);
@@ -36,19 +36,22 @@ router.post("/login", loginController);
 // Users Routes
 router.get("/users/:id", checkUser, getUserDetails);
 router.get("/get-users/:username", getAllUsers);
-router.put("/update-user/", authentication, upload.single("img"), updateUser);
+//router.put("/update-user/", authentication, upload.single("img"), updateUser);
+router.put("/update-user", authentication, updateUser);
 router.delete("/delete-user", authentication, deleteUser);
 
 // Blogs Routes
 router.get("/get-blogs", getAllBlogs);
 router.get("/get-blog/:blogId", checkUser, getBlogById);
-router.post("/create-blog", authentication, upload.single("img"), createBlog);
-router.put(
-  "/update-blog/:id",
-  authentication,
-  upload.single("img"),
-  updateBlog
-);
+//router.post("/create-blog", authentication, upload.single("img"), createBlog);
+router.post("/create-blog", authentication, createBlog);
+// router.put(
+//   "/update-blog/:id",
+//   authentication,
+//   upload.single("img"),
+//   updateBlog
+// );
+router.put("/update-blog/:id", authentication, updateBlog);
 router.delete("/delete-blog/:id", authentication, deleteBlog);
 
 // Comments routes
