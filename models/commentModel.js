@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const schema = mongoose.Schema(
+const commentschema = mongoose.Schema(
   {
     blogId: {
       type: String,
@@ -22,5 +22,5 @@ const schema = mongoose.Schema(
   { timestamps: true }
 );
 
-const commentModel = mongoose.model("comments", schema);
+const commentModel = mongoose.model("comments", commentschema);
 export default commentModel;
