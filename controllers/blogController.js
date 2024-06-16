@@ -1,9 +1,5 @@
 import mongoose from "mongoose";
 import blogs from "../models/blogModel.js";
-import {
-  uploadOnCloudinary,
-  deleteOnCloudinary,
-} from "../config/cloudinary.js";
 import commentModel from "../models/commentModel.js";
 
 export const getAllBlogs = async (req, res) => {
@@ -53,12 +49,6 @@ export const createBlog = async (req, res) => {
   const user = res.locals.user;
 
   try {
-    // Upload image to Cloudinary
-    //const cloudinaryRes = await uploadOnCloudinary(req.file);
-    // if (!cloudinaryRes) {
-    //   throw new Error("Failed to upload image to Cloudinary");
-    // }
-    // Create blog entry
     const newBlog = new blogs({
       title,
       description,
@@ -82,19 +72,6 @@ export const updateBlog = async (req, res) => {
   };
 
   try {
-    // if (req.file) {
-    //   const oldBlogData = await blogs.findOne({ _id: blogId });
-    //   const outDatedImg = oldBlogData.img.public_id;
-    //   await deleteOnCloudinary(outDatedImg);
-    //   const newImg = await uploadOnCloudinary(req.file);
-    //   UpdatedData.img = {
-    //     public_id: newImg.public_id,
-    //     url: newImg.url,
-    //   };
-    //   if (!newImg) {
-    //     throw new Error("Failed to upload image to Cloudinary");
-    //   }
-    // }
     const updatedBlog = await blogs.findOneAndUpdate(
       { _id: blogId, author: user },
       UpdatedData,
@@ -125,9 +102,7 @@ export const deleteBlog = async (req, res) => {
     if (blogData.author !== user) {
       return res.status(403).json({ message: "User is not authorized." });
     }
-
-    //const BlogImg = blogData.img.public_id;
-    //await deleteOnCloudinary(BlogImg);
+    
     await commentModel.deleteMany({ blogId: blogId });
     await blogs.findOneAndDelete({
       _id: blogId,
