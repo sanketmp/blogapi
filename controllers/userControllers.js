@@ -24,7 +24,7 @@ export const getUserDetails = async (req, res) => {
       auth: user === username ? true : false,
     });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error:\n", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

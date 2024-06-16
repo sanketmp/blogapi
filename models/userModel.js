@@ -10,17 +10,17 @@ const userSchema = mongoose.Schema(
   {
     username: {
       type: String,
-      required: true,
+      required: [true, "username is required"],
       unique: true,
       lowercase: true,
     },
     firstname: {
       type: String,
-      required: true,
+      required: [true, "first name is required"],
     },
     lastname: {
       type: String,
-      required: true,
+      required: [true, "last name is required"],
     },
     email: {
       type: String,
@@ -31,7 +31,7 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "password is required"],
       minlength: [8, "incorrect password"],
     },
     bio: {

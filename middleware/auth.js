@@ -14,7 +14,7 @@ export const authentication = (req, res, next) => {
 
     jwt.verify(
       token,
-      process.env.ACCESS_SECRET_KEY,
+      process.env.JWT_SECRET,
       async (err, decodedToken) => {
         if (err) {
           res.locals.user = null;
